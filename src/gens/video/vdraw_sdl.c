@@ -36,7 +36,7 @@
 #include <string.h>
 
 // SDL includes.
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "input/input_sdl_events.hpp"
 
 // VDP includes.
@@ -62,10 +62,15 @@ static int	vdraw_sdl_reinit_gens_window(void);
 
 // Used internally. (Not used in vdraw_backend_t.)
 static void	vdraw_sdl_draw_border(void);
+typedef int bool;
+#define true 1
+#define false 0
 
 // Miscellaneous.
 #define VDRAW_SDL_FLAGS (SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_HWPALETTE | SDL_ASYNCBLIT | SDL_HWACCEL)
-static SDL_Surface *vdraw_sdl_screen;
+SDL_Surface *vdraw_sdl_screen;
+SDL_Window* window;
+SDL_Renderer* renderer;
 
 
 // VDraw Backend struct.
@@ -89,6 +94,26 @@ const vdraw_backend_t vdraw_backend_sdl =
 	.reinit_gens_window	= vdraw_sdl_reinit_gens_window
 };
 
+//RetroRig Dual Head Support
+bool verifyIsNumber(char * string)
+{
+    int x = 0;
+    int len;
+    
+    if (string == NULL)
+    {
+      return false;
+    }
+    
+    len = strlen(string);
+
+    while(x < len) {
+           if(!isdigit(*(string+x)))
+           return false;
+           ++x;
+    }
+    return true;
+}
 
 /**
  * vdraw_sdl_init(): Initialize the SDL video subsystem.
@@ -121,15 +146,70 @@ static int vdraw_sdl_init(void)
 		return -1;
 	}
 	
-	// Initialize the SDL backend.
-	vdraw_sdl_screen = SDL_SetVideoMode(w, h, bppOut, VDRAW_SDL_FLAGS | (vdraw_get_fullscreen() ? SDL_FULLSCREEN : 0));
-	if (!vdraw_sdl_screen)
+	//RetroRig Dual Head Support
+	int displayNumber;
+	long tempValue = 0;
+	char * displayNumberStr;
+    
+	// setup default display
+	displayNumber = 0;
+    
+	//get environment
+	displayNumberStr=getenv("SDL_VIDEO_FULLSCREEN_HEAD");
+    
+	// check if a valid number was found
+	if(verifyIsNumber(displayNumberStr))
 	{
-		// Error setting the SDL video mode.
+	  // a valid number was found
+
+	  //convert to integer
+	  tempValue = atoi(displayNumberStr);
+     
+	  //check if larger equal zero and less display numbers 
+	  if ((tempValue >=0) && (tempValue < SDL_GetNumVideoDisplays()))
+	  {
+	    // check passed
+	    displayNumber = tempValue;
+	  }
+	}
+	
+	// Initialize the SDL backend.
+	
+	window = SDL_CreateWindow("GensGs for RetroRig",
+                   SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayNumber),
+                   SDL_WINDOWPOS_UNDEFINED,
+                   w,
+                   h,
+                   SDL_WINDOW_FULLSCREEN_DESKTOP);
+	
+	if (!window)
+	{
 		const char *sErr = SDL_GetError();
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		LOG_MSG(video, LOG_MSG_LEVEL_ERROR,
-			"SDL_SetVideoMode() failed: %s", sErr);
+			"SDL_CreateWindow failed: %s", sErr);
+		return -2;
+	}
+	
+	vdraw_sdl_screen = SDL_GetWindowSurface(window);
+	
+	if (!vdraw_sdl_screen)
+	{
+		const char *sErr = SDL_GetError();
+		SDL_QuitSubSystem(SDL_INIT_VIDEO);
+		LOG_MSG(video, LOG_MSG_LEVEL_ERROR,
+			"SDL_GetWindowSurface failed: %s", sErr);
+		return -2;
+	}
+	
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	
+	if (!renderer)
+	{
+		const char *sErr = SDL_GetError();
+		SDL_QuitSubSystem(SDL_INIT_VIDEO);
+		LOG_MSG(video, LOG_MSG_LEVEL_ERROR,
+			"SDL_CreateRenderer failed: %s", sErr);
 		return -2;
 	}
 	
@@ -235,7 +315,9 @@ static int vdraw_sdl_flip(void)
 	
 	SDL_UnlockSurface(vdraw_sdl_screen);
 	
-	SDL_Flip(vdraw_sdl_screen);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+	SDL_RenderPresent(renderer);
 	
 	// TODO: Return appropriate error code.
 	return 0;

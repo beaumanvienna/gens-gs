@@ -37,7 +37,7 @@
 #include <string.h>
 
 // SDL includes.
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "input/input_sdl_events.hpp"
 
 // VDP includes.
@@ -70,9 +70,16 @@ static int	vdraw_sdl_gl_reinit_gens_window(void);
 static void	vdraw_sdl_gl_draw_border(void);
 static int	vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitSDL);
 
+typedef int bool;
+#define true 1
+#define false 0
+bool verifyIsNumber(char * string);
+
 // Miscellaneous.
 #define VDRAW_SDL_GL_FLAGS (SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_HWPALETTE | SDL_ASYNCBLIT | SDL_HWACCEL | SDL_OPENGL)
-static SDL_Surface *vdraw_sdl_gl_screen;
+SDL_Surface *vdraw_sdl_gl_screen;
+SDL_Window* window;
+SDL_Renderer* renderer;
 
 // OpenGL variables.
 static GLuint textures[1] = {0};
@@ -244,13 +251,69 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 						GL_UNSIGNED_BYTE);
 		}
 		
-		vdraw_sdl_gl_screen = SDL_SetVideoMode(w, h, 0, VDRAW_SDL_GL_FLAGS | (vdraw_get_fullscreen() ? SDL_FULLSCREEN : 0));
-		if (!vdraw_sdl_gl_screen)
+		//RetroRig Dual Head Support
+		int displayNumber;
+		long tempValue = 0;
+		char * displayNumberStr;
+    
+		// setup default display
+		displayNumber = 0;
+    
+		//get environment
+		displayNumberStr=getenv("SDL_VIDEO_FULLSCREEN_HEAD");
+    
+		// check if a valid number was found
+		if(verifyIsNumber(displayNumberStr))
 		{
-			// Error setting the SDL video mode.
+		  // a valid number was found
+
+		  //convert to integer
+		  tempValue = atoi(displayNumberStr);
+      
+		  //check if larger equal zero and less display numbers 
+		  if ((tempValue >=0) && (tempValue < SDL_GetNumVideoDisplays()))
+		  {
+		    // check passed
+		    displayNumber = tempValue;
+		  }
+		}
+
+		window = SDL_CreateWindow("GensGs for RetroRig",
+                           SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayNumber),
+                           SDL_WINDOWPOS_UNDEFINED,
+                           w,
+                           h,
+                           SDL_WINDOW_FULLSCREEN_DESKTOP);
+		
+		if (!window)
+		{
 			const char *sErr = SDL_GetError();
 			LOG_MSG(video, LOG_MSG_LEVEL_ERROR,
-				"SDL_SetVideoMode() failed: %s", sErr);
+				"SDL_CreateWindow failed: %s", sErr);
+			
+			SDL_QuitSubSystem(SDL_INIT_VIDEO);
+			return -1;
+		}
+		
+		vdraw_sdl_gl_screen = SDL_GetWindowSurface(window);
+		
+		if (!vdraw_sdl_gl_screen)
+		{
+			const char *sErr = SDL_GetError();
+			LOG_MSG(video, LOG_MSG_LEVEL_ERROR,
+				"SDL_GetWindowSurface failed: %s", sErr);
+			
+			SDL_QuitSubSystem(SDL_INIT_VIDEO);
+			return -1;
+		}
+		
+		renderer = SDL_CreateRenderer(window, -1, 0);
+		
+		if (!renderer)
+		{
+			const char *sErr = SDL_GetError();
+			LOG_MSG(video, LOG_MSG_LEVEL_ERROR,
+				"SDL_CreateRenderer failed: %s", sErr);
 			
 			SDL_QuitSubSystem(SDL_INIT_VIDEO);
 			return -1;
@@ -497,7 +560,7 @@ static int vdraw_sdl_gl_flip(void)
 	glEnd();
 	
 	// Swap the SDL GL buffers.
-	SDL_GL_SwapBuffers();
+	SDL_GL_SwapWindow(window);
 	
 	// TODO: Return appropriate error code.
 	return 0;

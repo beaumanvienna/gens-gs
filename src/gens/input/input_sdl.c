@@ -179,7 +179,7 @@ int input_sdl_end(void)
 	// If any joysticks were opened, close them.
 	for (unsigned int i = 0; i < INPUT_SDL_MAX_JOYSTICKS; i++)
 	{
-		if (SDL_JoystickOpened(i))
+		if (input_sdl_joys[i])
 		{
 			SDL_JoystickClose(input_sdl_joys[i]);
 			input_sdl_joys[i] = NULL;
