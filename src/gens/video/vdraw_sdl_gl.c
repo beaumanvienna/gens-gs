@@ -277,7 +277,7 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 		    displayNumber = tempValue;
 		  }
 		}
-
+		printf("retrorig #117: vdraw_sdl_gl_init_opengl\n");
 		window = SDL_CreateWindow("GensGs for RetroRig",
                            SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayNumber),
                            SDL_WINDOWPOS_UNDEFINED,
@@ -295,7 +295,7 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 			return -1;
 		}
 		
-		vdraw_sdl_gl_screen = SDL_GetWindowSurface(window);
+		/*vdraw_sdl_gl_screen = SDL_GetWindowSurface(window);
 		
 		if (!vdraw_sdl_gl_screen)
 		{
@@ -305,7 +305,7 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 			
 			SDL_QuitSubSystem(SDL_INIT_VIDEO);
 			return -1;
-		}
+		}*/
 		
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		
@@ -342,7 +342,7 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 	filterBufferSize = rowLength * (240 * scale) * bytespp;
 	filterBuffer = (unsigned char*)(gsft_malloc_align(filterBufferSize, 16));
 	
-	glViewport(0, 0, vdraw_sdl_gl_screen->w, vdraw_sdl_gl_screen->h);
+	glViewport(0, 0, w, h);
 	
 	// GL Orthographic Projection code imported from Gens/Linux 2.15.4.
 	// TODO: Is this stuff really necessary?
@@ -631,9 +631,9 @@ static void vdraw_sdl_gl_update_renderer(void)
 		return;
 	const int w = 320 * scale;
 	
-	if (vdraw_sdl_gl_screen->w == Video.GL.width &&
-	    vdraw_sdl_gl_screen->h == Video.GL.height &&
-	    rowLength == w && textureSize == vdraw_sdl_gl_calc_texture_size(scale))
+	//if (vdraw_sdl_gl_screen->w == Video.GL.width &&
+	//    vdraw_sdl_gl_screen->h == Video.GL.height &&
+	//    rowLength == w && textureSize == vdraw_sdl_gl_calc_texture_size(scale))
 	{
 		// No resolution switch is necessary. Simply clear the screen.
 		vdraw_sdl_gl_clear_screen();
@@ -641,7 +641,7 @@ static void vdraw_sdl_gl_update_renderer(void)
 	}
 	
 	// Resolution switch is needed.
-	
+	/* 
 	// Clear the GL buffers.
 	// TODO: Make this a separate function that is also called by End_Video().
 	if (filterBuffer)
@@ -667,7 +667,7 @@ static void vdraw_sdl_gl_update_renderer(void)
 	}
 	
 	// Clear the screen.
-	vdraw_sdl_gl_clear_screen();
+	vdraw_sdl_gl_clear_screen();*/
 }
 
 
