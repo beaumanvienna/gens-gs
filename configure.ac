@@ -385,7 +385,7 @@ if test x$with_opengl = xyes; then
 			if test x$os = xmacosx; then
 				GL_LIBS="-framework OpenGL"
 			else
-				GL_LIBS="-lGL"
+				GL_LIBS="-lGL -ldl -lX11"
 			fi
 			AC_DEFINE(GENS_OPENGL, 1, OpenGL support)
 		fi
