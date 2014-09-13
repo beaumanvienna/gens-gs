@@ -212,17 +212,17 @@ fi
 
 # SDL
 # Note: If AM_PATH_SDL isn't defined, SDL is assumed to be installed.
-SDL_VERSION=1.1.3
+SDL_VERSION=2.0.2
 ifdef(
-	[AM_PATH_SDL],
+	[AM_PATH_SDL2],
 	[
-		AM_PATH_SDL(
+		AM_PATH_SDL2(
 			$SDL_VERSION,
 			:,
 			AC_MSG_ERROR([[*** SDL version $SDL_VERSION or later not found!]])
 		)
 	],
-	[AC_MSG_WARN([[*** AM_PATH_SDL is not defined. Assuming SDL is installed.]])]
+	[AC_MSG_WARN([[*** AM_PATH_SDL2 is not defined. Assuming SDL2 is installed.]])]
 )
 
 # END: Unix / Linux (and MacOS X for now)
