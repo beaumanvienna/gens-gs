@@ -1,3 +1,7 @@
+Build command:
+
+rm -rf autom4te.cache/ && aclocal && autoconf && autoreconf -i && automake --add-missing && ./configure && make
+
 Gens/GS r7
 
 Copyright (c) 1999-2002 by Stéphane Dallongeville
