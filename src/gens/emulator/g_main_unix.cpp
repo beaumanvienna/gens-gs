@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
 	if (!vdraw_get_fullscreen())
 		gtk_widget_show(gens_window);
 	
-	// Run the Gens Main Loop.
+	printf("retrorig #117: running main loop\n");
 	GensMainLoop();
 	
 	// Save the configuration file.

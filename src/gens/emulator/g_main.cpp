@@ -383,6 +383,7 @@ void check_startup_mode(Gens_StartupInfo_t *startup)
 			// Startup ROM specified.
 			if (startup->filename[0] != 0x00)
 			{
+			  printf("retrorig #117: openROM\n");
 				if (ROM::openROM(startup->filename) == -1)
 				{
 					// Could not open the startup ROM.
@@ -419,6 +420,13 @@ void check_startup_mode(Gens_StartupInfo_t *startup)
  */
 void GensLoopIteration(void)
 {
+  printf(".");GensUI::sleep(100);
+  printf(".");GensUI::sleep(100);
+  printf(".");GensUI::sleep(100);
+  printf(".");GensUI::sleep(100);
+  printf(".");GensUI::sleep(100);
+  printf(".");GensUI::sleep(100);
+  printf(".");GensUI::sleep(100);
 	// Update the UI.
 	GensUI::update();
 	
