@@ -196,7 +196,7 @@ ifdef(
 AC_DEFINE(GENS_UI_GTK, 1, Enable the GTK+ UI)
 
 # TODO: Disable deprecated GTK+ features.
-GTK_CFLAGS="$GTK_CFLAGS -DGTK_DISABLE_DEPRECATED -DDISABLE_DEPRECATED -DGSEAL_ENABLE"
+GTK_CFLAGS="$GTK_CFLAGS -DGSEAL_ENABLE"
 
 #elif test x$ui = xqt4; then
 #
@@ -535,7 +535,7 @@ if test x$obj_format = xwin32; then
 	# Symbol visibility isn't applicable on Win32.
 	AC_MSG_RESULT(not applicable on Win32)
 else
-	AC_COMPILE_IFELSE(
+	AC_COMPILE_IFELSE([
 		AC_LANG_PROGRAM(
 			[[
 				#include <stdio.h>
@@ -546,7 +546,7 @@ else
 					#error Not gcc-4.x or higher.
 				#endif
 			]],
-			[[printf("Test for gcc visibility support.\n");]]),
+			[[printf("Test for gcc visibility support.\n");]])],
 		[fvisibility=yes],
 		[fvisibility=no]
 	)
@@ -571,30 +571,30 @@ AC_MSG_CHECKING(for hash table type)
 AC_LANG(C++)
 
 # Check if the TR1 unordered map works. (gcc-4.x and later)
-AC_COMPILE_IFELSE(
+AC_COMPILE_IFELSE([
 	AC_LANG_PROGRAM(
 		[[#include <tr1/unordered_map>]],
-		[[std::tr1::unordered_map<int, int>::iterator testIterator;]]),
+		[[std::tr1::unordered_map<int, int>::iterator testIterator;]])],
 	[hashtable=tr1_unordered_map],
 	[hashtable=no]
 	)
 
 if test x$hashtable = xno; then
 	# Check if the gcc hash map works. (gcc-3.x and earlier)
-	AC_COMPILE_IFELSE(
+	AC_COMPILE_IFELSE([
 		AC_LANG_PROGRAM(
 			[[#include <ext/hash_map>]],
-			[[__gnu_cxx::hash_map<int, int>::iterator testIterator;]]),
+			[[__gnu_cxx::hash_map<int, int>::iterator testIterator;]])],
 		[hashtable=gnu_hash_map],
 		[hashtable=no]
 		)
 	
 	if test x$hashtable = xno; then
 		# Check if the standard C++ map works.
-		AC_COMPILE_IFELSE(
+		AC_COMPILE_IFELSE([
 			AC_LANG_PROGRAM(
 				[[#include <map>]],
-				[[std::map<int, int>::iterator testIterator;]]),
+				[[std::map<int, int>::iterator testIterator;]])],
 			[hashtable=std_map],
 			[hashtable=no]
 			)
