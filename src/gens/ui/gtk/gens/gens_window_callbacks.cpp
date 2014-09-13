@@ -154,12 +154,12 @@ gboolean gens_window_drag_drop(GtkWidget *widget, GdkDragContext *context,
 	GSFT_UNUSED_PARAMETER(y);
 	GSFT_UNUSED_PARAMETER(user_data);
 	
-	if (context->targets)
+	/*if (context->targets)
 	{
 		GdkAtom target_type = GDK_POINTER_TO_ATOM(g_list_nth_data(context->targets, 0));
 		gtk_drag_get_data(widget, context, target_type, time);
 		return true;
-	}
+	}*/
 	return false;
 }
 
