@@ -57,7 +57,7 @@ using std::list;
 
 #ifdef GENS_OS_MACOSX
 // SDL is needed in order to set the SDL window title.
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #endif
 
 // Video and Input handlers.

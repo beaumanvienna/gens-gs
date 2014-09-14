@@ -103,7 +103,6 @@ void input_sdl_event_key_down(int key)
 	// be removed later by using the standard MacOS X menu bar.
 	const int allow_gtk_hotkeys = 1;
 #endif
-	
 	switch (key)
 	{
 		case GENS_KEY_LCTRL:
@@ -125,8 +124,15 @@ void input_sdl_event_key_down(int key)
 			mod |= GENS_KMOD_RSHIFT;
 			break;
 		case GENS_KEY_ESCAPE:
-			if (Quick_Exit)
+			//if (Quick_Exit)
 				close_gens();
+			{
+				Settings.Paused = 1;
+				if (ice == 2)
+					ice = 3;
+				//Pause_Screen();
+				audio_clear_sound_buffer();
+			}
 			
 #ifdef GENS_DEBUGGER
 			if (Options::debugMode())

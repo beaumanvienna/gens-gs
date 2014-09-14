@@ -425,7 +425,7 @@ void GensLoopIteration(void)
 	GensUI::update();
 
 	// Update physical controller inputs.
-	input_update();
+	input_update(); 
 	
 #ifdef GENS_DEBUGGER
 	if (IS_DEBUGGING())

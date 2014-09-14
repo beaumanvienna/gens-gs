@@ -37,7 +37,7 @@
 #include "gens/gens_window.h"
 
 // SDL includes.
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 // GTK+ includes.
 #include <gtk/gtk.h>

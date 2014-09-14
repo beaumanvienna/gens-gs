@@ -37,7 +37,7 @@
 // Needed to handle controller input configuration.
 #include "controller_config/cc_window.h"
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 // GTK stuff
 #include <gtk/gtk.h>
@@ -237,7 +237,7 @@ static gint input_sdl_gdk_keysnoop(GtkWidget *grab, GdkEventKey *event, gpointer
 	
 	// Convert this keypress from GDK to SDL.
 	// TODO: Use GENS key defines instead.
-	sdlev.key.keysym.sym = (SDLKey)input_sdl_gdk_to_gens_keyval(event->keyval);
+	sdlev.key.keysym.sym = (SDL_Keycode)input_sdl_gdk_to_gens_keyval(event->keyval);
 	if (sdlev.key.keysym.sym != -1)
 		SDL_PushEvent(&sdlev);
 	
@@ -381,7 +381,6 @@ static int input_sdl_update(void)
 {
 	// Check for SDL events
 	SDL_Event event;
-	/*
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -396,10 +395,10 @@ static int input_sdl_update(void)
 			//	break;
 			//
 			
-			case SDL_ACTIVEEVENT:
-				if (event.active.state & SDL_APPINPUTFOCUS)
-					input_sdl_reset_modifiers();
-				break;
+			//case SDL_ACTIVEEVENT:
+			//	if (event.active.state & SDL_APPINPUTFOCUS)
+			//		input_sdl_reset_modifiers();
+			//	break;
 			
 			case SDL_KEYDOWN:
 				input_sdl_keys[event.key.keysym.sym] = TRUE;
@@ -438,7 +437,6 @@ static int input_sdl_update(void)
 				break;
 		}
 	}
-	*/
 	return 0;
 }
 
