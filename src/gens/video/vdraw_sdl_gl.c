@@ -79,7 +79,7 @@ bool verifyIsNumber(char * string);
 #define VDRAW_SDL_GL_FLAGS (SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_HWPALETTE | SDL_ASYNCBLIT | SDL_HWACCEL | SDL_OPENGL)
 SDL_Surface *vdraw_sdl_gl_screen;
 SDL_Window* window;
-SDL_Renderer* renderer;
+SDL_GLContext glcontext;
 
 // OpenGL variables.
 static GLuint textures[1] = {0};
@@ -281,8 +281,8 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 		window = SDL_CreateWindow("GensGs for RetroRig",
                            SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayNumber),
                            SDL_WINDOWPOS_UNDEFINED,
-                           w,
-                           h,
+                           1920,
+                           1080,
                            SDL_WINDOW_FULLSCREEN_DESKTOP);
 		
 		if (!window)
@@ -295,7 +295,7 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 			return -1;
 		}
 		
-		/*vdraw_sdl_gl_screen = SDL_GetWindowSurface(window);
+		vdraw_sdl_gl_screen = SDL_GetWindowSurface(window);
 		
 		if (!vdraw_sdl_gl_screen)
 		{
@@ -305,19 +305,12 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 			
 			SDL_QuitSubSystem(SDL_INIT_VIDEO);
 			return -1;
-		}*/
-		
-		renderer = SDL_CreateRenderer(window, -1, 0);
-		
-		if (!renderer)
-		{
-			const char *sErr = SDL_GetError();
-			LOG_MSG(video, LOG_MSG_LEVEL_ERROR,
-				"SDL_CreateRenderer failed: %s", sErr);
-			
-			SDL_QuitSubSystem(SDL_INIT_VIDEO);
-			return -1;
 		}
+		
+		// Create an OpenGL context associated with the window.
+		glcontext = SDL_GL_CreateContext(window);
+		
+		
 	}
 	
 	// Update VSync.
@@ -342,7 +335,7 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 	filterBufferSize = rowLength * (240 * scale) * bytespp;
 	filterBuffer = (unsigned char*)(gsft_malloc_align(filterBufferSize, 16));
 	
-	glViewport(0, 0, w, h);
+	glViewport(0, 0, vdraw_sdl_gl_screen->w, vdraw_sdl_gl_screen->h);
 	
 	// GL Orthographic Projection code imported from Gens/Linux 2.15.4.
 	// TODO: Is this stuff really necessary?
@@ -561,7 +554,7 @@ static int vdraw_sdl_gl_flip(void)
 	
 	// Swap the SDL GL buffers.
 	SDL_GL_SwapWindow(window);
-	
+	 	
 	// TODO: Return appropriate error code.
 	return 0;
 }
@@ -631,9 +624,9 @@ static void vdraw_sdl_gl_update_renderer(void)
 		return;
 	const int w = 320 * scale;
 	
-	//if (vdraw_sdl_gl_screen->w == Video.GL.width &&
-	//    vdraw_sdl_gl_screen->h == Video.GL.height &&
-	//    rowLength == w && textureSize == vdraw_sdl_gl_calc_texture_size(scale))
+	if (vdraw_sdl_gl_screen->w == Video.GL.width &&
+	    vdraw_sdl_gl_screen->h == Video.GL.height &&
+	    rowLength == w && textureSize == vdraw_sdl_gl_calc_texture_size(scale))
 	{
 		// No resolution switch is necessary. Simply clear the screen.
 		vdraw_sdl_gl_clear_screen();
@@ -641,7 +634,7 @@ static void vdraw_sdl_gl_update_renderer(void)
 	}
 	
 	// Resolution switch is needed.
-	/* 
+	
 	// Clear the GL buffers.
 	// TODO: Make this a separate function that is also called by End_Video().
 	if (filterBuffer)
@@ -667,7 +660,7 @@ static void vdraw_sdl_gl_update_renderer(void)
 	}
 	
 	// Clear the screen.
-	vdraw_sdl_gl_clear_screen();*/
+	vdraw_sdl_gl_clear_screen();
 }
 
 

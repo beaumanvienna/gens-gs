@@ -420,16 +420,10 @@ void check_startup_mode(Gens_StartupInfo_t *startup)
  */
 void GensLoopIteration(void)
 {
-  printf(".");GensUI::sleep(100);
-  printf(".");GensUI::sleep(100);
-  printf(".");GensUI::sleep(100);
-  printf(".");GensUI::sleep(100);
-  printf(".");GensUI::sleep(100);
-  printf(".");GensUI::sleep(100);
-  printf(".");GensUI::sleep(100);
+  
 	// Update the UI.
 	GensUI::update();
-	
+
 	// Update physical controller inputs.
 	input_update();
 	
@@ -442,7 +436,7 @@ void GensLoopIteration(void)
 		GensUI::sleep(100);
 	}
 	else
-#endif /* GENS_DEBUGGER */
+#endif // GENS_DEBUGGER 
 	if (Game != NULL)
 	{
 		if (Settings.Active && !Settings.Paused)

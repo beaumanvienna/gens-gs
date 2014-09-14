@@ -153,6 +153,7 @@ int input_sdl_init(void)
 	
 	// If any joysticks are connected, set them up.
 	// TODO: Increase number of joysticks from 6?
+	printf("retrorig #117: number of joysticks found is %d\n",SDL_NumJoysticks());
 	if (SDL_NumJoysticks() > 0)
 	{
 		SDL_JoystickEventState(SDL_ENABLE);
@@ -380,7 +381,7 @@ static int input_sdl_update(void)
 {
 	// Check for SDL events
 	SDL_Event event;
-	
+	/*
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -389,11 +390,11 @@ static int input_sdl_update(void)
 				close_gens();
 				return -1;
 			
-			/* TODO: SDL_VIDEORESIZE should work in GL mode.
-			case SDL_VIDEORESIZE:
-				surface = SDL_SetVideoMode(event.resize.w, event.resize.h, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
-				break;
-			*/
+			// TODO: SDL_VIDEORESIZE should work in GL mode.
+			//case SDL_VIDEORESIZE:
+			//	surface = SDL_SetVideoMode(event.resize.w, event.resize.h, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
+			//	break;
+			//
 			
 			case SDL_ACTIVEEVENT:
 				if (event.active.state & SDL_APPINPUTFOCUS)
@@ -437,7 +438,7 @@ static int input_sdl_update(void)
 				break;
 		}
 	}
-	
+	*/
 	return 0;
 }
 
