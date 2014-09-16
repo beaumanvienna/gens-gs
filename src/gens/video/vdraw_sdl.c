@@ -174,7 +174,10 @@ static int vdraw_sdl_init(void)
 	}
 	
 	// Initialize the SDL backend.
+#ifdef RETRORIG_PL2
 	printf("retrorig #117: vdraw_sdl_init\n");
+#endif
+	printf("This backend should not be used. Use SDL+OpenGL instead.\n");
 	window = SDL_CreateWindow("GensGs for RetroRig",
                    SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayNumber),
                    SDL_WINDOWPOS_UNDEFINED,

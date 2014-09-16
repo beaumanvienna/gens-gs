@@ -277,12 +277,19 @@ static int vdraw_sdl_gl_init_opengl(const int w, const int h, const BOOL reinitS
 		    displayNumber = tempValue;
 		  }
 		}
+		
+#ifdef RETRORIG_PL2
 		printf("retrorig #117: vdraw_sdl_gl_init_opengl\n");
+#endif
+		
+		SDL_Rect r;
+                SDL_GetDisplayBounds(displayNumber, &r);
+		
 		window = SDL_CreateWindow("GensGs for RetroRig",
                            SDL_WINDOWPOS_UNDEFINED_DISPLAY(displayNumber),
                            SDL_WINDOWPOS_UNDEFINED,
-                           1920,
-                           1080,
+                           r.w,
+                           r.h,
                            SDL_WINDOW_FULLSCREEN_DESKTOP);
 		
 		if (!window)
@@ -566,7 +573,12 @@ static int vdraw_sdl_gl_flip(void)
  */
 static void vdraw_sdl_gl_draw_border(void)
 {
+  
+	// Border color should be black.
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+  
 	// Clear the OpenGL buffer.
+	/*
 	if (!Video.borderColorEmulation)
 	{
 		// Border color should be black.
@@ -605,7 +617,7 @@ static void vdraw_sdl_gl_draw_border(void)
 			     (GLclampf)colorU.g / 255.0,
 			     (GLclampf)colorU.b / 255.0, 0.0);
 	}
-	
+	*/
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

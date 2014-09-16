@@ -203,8 +203,10 @@ int main(int argc, char *argv[])
 	// Show the Gens window.
 	if (!vdraw_get_fullscreen())
 		gtk_widget_show(gens_window);
-	
+
+#ifdef RETRORIG_PL2
 	printf("retrorig #117: running main loop\n");
+#endif
 	GensMainLoop();
 	
 	// Save the configuration file.

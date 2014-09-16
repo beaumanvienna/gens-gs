@@ -153,7 +153,9 @@ int input_sdl_init(void)
 	
 	// If any joysticks are connected, set them up.
 	// TODO: Increase number of joysticks from 6?
+#ifdef RETRORIG_PL2
 	printf("retrorig #117: number of joysticks found is %d\n",SDL_NumJoysticks());
+#endif
 	if (SDL_NumJoysticks() > 0)
 	{
 		SDL_JoystickEventState(SDL_ENABLE);
@@ -383,6 +385,10 @@ static int input_sdl_update(void)
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
+#ifdef RETRORIG_PL2
+	  if ((int)event.type != 1536)
+	    printf("retrotig #117: type = %d\n",(int)event.type);
+#endif
 		switch (event.type)
 		{
 			case SDL_QUIT:
@@ -401,13 +407,19 @@ static int input_sdl_update(void)
 			//	break;
 			
 			case SDL_KEYDOWN:
-				input_sdl_keys[event.key.keysym.sym] = TRUE;
-				input_sdl_event_key_down(event.key.keysym.sym);
+				if (event.key.keysym.sym<INPUT_SDL_MAX_KEYS)
+				{
+				  input_sdl_keys[event.key.keysym.sym] = TRUE;
+				  input_sdl_event_key_down(event.key.keysym.sym);
+				}
 				break;
 				
 			case SDL_KEYUP:
-				input_sdl_keys[event.key.keysym.sym] = FALSE;
-				input_sdl_event_key_up(event.key.keysym.sym);
+				if (event.key.keysym.sym<INPUT_SDL_MAX_KEYS)
+				{
+				  input_sdl_keys[event.key.keysym.sym] = FALSE;
+				  input_sdl_event_key_up(event.key.keysym.sym);
+				}
 				break;
 			
 			case SDL_JOYAXISMOTION:

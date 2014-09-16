@@ -383,7 +383,9 @@ void check_startup_mode(Gens_StartupInfo_t *startup)
 			// Startup ROM specified.
 			if (startup->filename[0] != 0x00)
 			{
+#ifdef RETRORIG_PL2
 			  printf("retrorig #117: openROM\n");
+#endif
 				if (ROM::openROM(startup->filename) == -1)
 				{
 					// Could not open the startup ROM.

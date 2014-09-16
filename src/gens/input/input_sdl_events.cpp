@@ -103,6 +103,9 @@ void input_sdl_event_key_down(int key)
 	// be removed later by using the standard MacOS X menu bar.
 	const int allow_gtk_hotkeys = 1;
 #endif
+#ifdef RETRORIG_PL2
+	printf("retrorig #117: key = %d\n",key);
+#endif
 	switch (key)
 	{
 		case GENS_KEY_LCTRL:
@@ -270,7 +273,7 @@ void input_sdl_event_key_down(int key)
 			}
 			break;
 		
-		case GENS_KEY_F5:
+		case GENS_KEY_r:
 			if (!allow_gtk_hotkeys)
 				break;
 			
@@ -305,7 +308,7 @@ void input_sdl_event_key_down(int key)
 			}
 			break;
 		
-		case GENS_KEY_F8:
+		case GENS_KEY_q:
 			if (!allow_gtk_hotkeys)
 				break;
 			
@@ -475,7 +478,7 @@ void input_sdl_event_key_down(int key)
 		*/
 #endif
 		
-		case GENS_KEY_q:
+		/*case GENS_KEY_q:
 			if (allow_gtk_hotkeys && IS_KMOD_CTRL(mod))
 				close_gens();
 			break;
@@ -491,7 +494,7 @@ void input_sdl_event_key_down(int key)
 				curBackend = 0;
 			Options::setBackend((VDRAW_BACKEND)curBackend);
 			break;
-		}
+		}*/
 		
 #ifdef GENS_CDROM
 		case GENS_KEY_v:
