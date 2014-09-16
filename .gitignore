@@ -9,7 +9,6 @@ configure
 .deps/
 .libs/
 .dirstamp
-Makefile
 Makefile.in
 star_m68k
 config.h
