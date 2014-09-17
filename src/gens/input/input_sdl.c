@@ -407,17 +407,17 @@ static int input_sdl_update(void)
 			//	break;
 			
 			case SDL_KEYDOWN:
-				if (event.key.keysym.sym<INPUT_SDL_MAX_KEYS)
+				if (event.key.keysym.scancode<INPUT_SDL_MAX_KEYS)
 				{
-				  input_sdl_keys[event.key.keysym.sym] = TRUE;
+				  input_sdl_keys[event.key.keysym.scancode] = TRUE;
 				  input_sdl_event_key_down(event.key.keysym.sym);
 				}
 				break;
 				
 			case SDL_KEYUP:
-				if (event.key.keysym.sym<INPUT_SDL_MAX_KEYS)
+				if (event.key.keysym.scancode<INPUT_SDL_MAX_KEYS)
 				{
-				  input_sdl_keys[event.key.keysym.sym] = FALSE;
+				  input_sdl_keys[event.key.keysym.scancode] = FALSE;
 				  input_sdl_event_key_up(event.key.keysym.sym);
 				}
 				break;
