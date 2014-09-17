@@ -37,7 +37,7 @@
 #include <string.h>
 
 // SDL includes.
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "input/input_sdl_events.hpp"
 
 // VDP includes.

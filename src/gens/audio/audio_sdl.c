@@ -26,7 +26,7 @@
 
 #include "audio.h"
 #include "audio_sdl.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 // MMX audio functions.
 #ifdef GENS_X86_ASM

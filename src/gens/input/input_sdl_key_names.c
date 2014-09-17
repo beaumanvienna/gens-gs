@@ -20,7 +20,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.           *
  ***************************************************************************/
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "gdk/gdkkeysyms.h"
 #include "gdk/gdkkeys.h"

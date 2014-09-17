@@ -52,7 +52,7 @@
 #include "input/input.h"
 
 // TODO: Move SDL-specific code to input_sdl.c.
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 
 // Window.

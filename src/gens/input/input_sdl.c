@@ -37,7 +37,7 @@
 // Needed to handle controller input configuration.
 #include "controller_config/cc_window.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 // GTK stuff
 #include <gtk/gtk.h>
