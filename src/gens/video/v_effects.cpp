@@ -101,7 +101,7 @@ static inline void T_Update_Gens_Logo(pixel *screen, const pixel *logo)
  */
 int Update_Gens_Logo(void)
 {
-	static void *logo_data = NULL;
+/*	static void *logo_data = NULL;
 	static int lastBpp = 0;
 	
 	if (lastBpp != bppMD)
@@ -207,6 +207,11 @@ int Update_Gens_Logo(void)
 		T_Update_Gens_Logo<uint16_t, 5, 31>(MD_Screen, (uint16_t*)logo_data);
 	else
 		T_Update_Gens_Logo<uint32_t, 40, 248>(MD_Screen32, (uint32_t*)logo_data);
+	*/
+
+        extern SDL_Window*  window;
+        SDL_Surface* icon = SDL_LoadBMP(GENS_DATADIR "/gens_big.bmp");
+	SDL_SetWindowIcon(window,icon);
 	
 	return 0;
 }
