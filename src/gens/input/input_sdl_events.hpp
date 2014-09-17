@@ -23,7 +23,7 @@
 #ifndef GENS_INPUT_SDL_EVENTS_HPP
 #define GENS_INPUT_SDL_EVENTS_HPP
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #ifdef __cplusplus
 extern "C" {

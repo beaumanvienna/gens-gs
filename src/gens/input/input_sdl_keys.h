@@ -23,7 +23,7 @@
 #ifndef GENS_INPUT_SDL_KEYS_H
 #define GENS_INPUT_SDL_KEYS_H
 
-#include <SDL2/SDL_keyboard.h>
+#include <SDL_keyboard.h>
 
 // Maps key symbols from SDL to OS-independent key symbols.
 #define GENS_KEY_BACKSPACE	SDLK_BACKSPACE
