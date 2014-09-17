@@ -30,7 +30,7 @@
 #include <stdint.h>
 
 #ifdef GENS_OS_UNIX
-#include <SDL/SDL.h>
+#include <SDL.h>
 #endif
 
 #ifdef GENS_OS_WIN32
